@@ -1,0 +1,167 @@
+{
+  "info": {
+    "name": "FoodDelivery",
+    "_postman_id": "abcd1234-5678-90ef-1112-131415161718",
+    "description": "Collection for Food Delivery API (Menus, Cart, Orders)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Menus",
+      "item": [
+        {
+          "name": "Get All Menus",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/menus",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["menus"]
+            }
+          }
+        },
+        {
+          "name": "Add Menu",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Pizza\",\n    \"price\": 250.0\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/menus",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["menus"]
+            }
+          }
+        },
+        {
+          "name": "Update Menu",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Burger\",\n    \"price\": 150.0\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/menus/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["menus", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Menu",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/menus/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["menus", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "Add to Cart",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customerId\": 1,\n    \"menuId\": 4,\n    \"quantity\": 2\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/cart/add",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["cart", "add"]
+            }
+          }
+        },
+        {
+          "name": "Get Cart by Customer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/cart/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["cart", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Cart Item",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/cart/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["cart", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Checkout Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customerId\": 1\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/orders/checkout",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["orders", "checkout"]
+            }
+          }
+        },
+        {
+          "name": "Get Orders by Customer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/orders/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["orders", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

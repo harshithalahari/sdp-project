@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodExpress - Food Delivery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #e23744;
+            --primary-dark: #c31a28;
+            --secondary: #ffc244;
+            --light: #f8f8f8;
+            --dark: #1f1f1f;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 1px solid var(--light-gray);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(226, 55, 68, 0.2);
+        }
+
+        .search-bar button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 7px 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-bar button:hover {
+            background: var(--primary-dark);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a i {
+            margin-right: 5px;
+        }
+
+        .login-btn {
+            color: var(--primary);
+        }
+
+        .cart-btn {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-bottom {
+            border-top: 1px solid var(--light-gray);
+            padding: 10px 0;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .category-list {
+            display: flex;
+            list-style: none;
+        }
+
+        .category-list li {
+            margin-right: 25px;
+        }
+
+        .category-list a {
+            padding: 5px 0;
+            font-weight: 500;
+            color: var(--gray);
+            transition: color 0.3s;
+        }
+
+        .category-list a:hover, .category-list a.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .location-input {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .location-input input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .location-input button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .location-input button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Restaurant Listings */
+        .section-title {
+            font-size: 28px;
+            margin: 40px 0 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .restaurant-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .restaurant-img {
+            height: 180px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .restaurant-info {
+            padding: 15px;
+        }
+
+        .restaurant-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .restaurant-cuisine {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .restaurant-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .rating {
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .delivery-time, .price {
+            color: var(--gray);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid var(--light-gray);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #aaa;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-top {
+                flex-wrap: wrap;
+            }
+
+            .search-bar {
+                order: 3;
+                max-width: 100%;
+                margin: 15px 0 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .user-actions {
+                display: none;
+            }
+
+            .hero {
+                padding: 60px 0;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .restaurant-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .location-input {
+                flex-direction: column;
+                border-radius: 10px;
+            }
+
+            .location-input input {
+                border-radius: 10px 10px 0 0;
+            }
+
+            .location-input button {
+                border-radius: 0 0 10px 10px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+    <div class="container">
+        <div class="header-top">
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="#" class="logo">
+                <i class="fas fa-utensils"></i>
+                FoodExpress
+            </a>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for restaurants or food...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="user-actions">
+                <a href="#" class="login-btn"><i class="fas fa-user"></i> Login</a>
+                <a href="#" class="cart-btn">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="cart-count">3</span>
+                </a>
+            </div>
+        </div>
+        <div class="header-bottom">
+            <ul class="category-list">
+                <li><a href="#" class="active">All</a></li>
+                <li><a href="#">Pizza</a></li>
+                <li><a href="#">Burger</a></li>
+                <li><a href="#">Chinese</a></li>
+                <li><a href="#">Indian</a></li>
+                <li><a href="#">Thai</a></li>
+                <li><a href="#">Mexican</a></li>
+                <li><a href="#">Desserts</a></li>
+                <li><a href="#">Beverages</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <h1>Order Your Favorite Food Online</h1>
+        <p>Discover the best restaurants and get your food delivered to your doorstep</p>
+        <div class="location-input">
+            <input type="text" placeholder="Enter your delivery location">
+            <button>Find Food</button>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<main class="container">
+    <!-- Popular Restaurants -->
+    <h2 class="section-title">Popular Restaurants</h2>
+    <div class="filters">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Pure Veg</button>
+        <button class="filter-btn">Non-Veg</button>
+        <button class="filter-btn">Fast Delivery</button>
+        <button class="filter-btn">Rating 4.0+</button>
+        <button class="filter-btn">Offers</button>
+    </div>
+    <div class="restaurant-grid">
+        <!-- Restaurant Card 1 -->
+        <div class="restaurant-card">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Restaurant" class="restaurant-img">
+            <div class="restaurant-info">
+                <h3 class="restaurant-name">Spice Garden</h3>
+                <p class="restaurant-cuisine">North Indian, Chinese, Mughlai</p>
+                <div class="restaurant-details">
+                    <span class="rating">4.2 ★</span>
+                    <span class="delivery-time">25 mins</span>
+                    <span class="price">₹300 for two</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Restaurant Card 2 -->
+        <div class="restaurant-card">
+            <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Restaurant" class="restaurant-img">
+            <div class="restaurant-info">
+                <h3 class="restaurant-name">Pizza Palace</h3>
+                <p class="restaurant-cuisine">Pizza, Italian, Fast Food</p>
+                <div class="restaurant-details">
+                    <span class="rating">4.5 ★</span>
+                    <span class="delivery-time">30 mins</span>
+                    <span class="price">₹500 for two</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Restaurant Card 3 -->
+        <div class="restaurant-card">
+            <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Restaurant" class="restaurant-img">
+            <div class="restaurant-info">
+                <h3 class="restaurant-name">Burger Hub</h3>
+                <p class="restaurant-cuisine">Burgers, American, Fast Food</p>
+                <div class="restaurant-details">
+                    <span class="rating">4.0 ★</span>
+                    <span class="delivery-time">20 mins</span>
+                    <span class="price">₹400 for two</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Restaurant Card 4 -->
+        <div class="restaurant-card">
+            <img src="https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Restaurant" class="restaurant-img">
+            <div class="restaurant-info">
+                <h3 class="restaurant-name">Dragon Wok</h3>
+                <p class="restaurant-cuisine">Chinese, Thai, Asian</p>
+                <div class="restaurant-details">
+                    <span class="rating">4.3 ★</span>
+                    <span class="delivery-time">35 mins</span>
+                    <span class="price">₹600 for two</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Offers -->
+    <h2 class="section-title">Top Offers</h2>
+    <div class="restaurant-grid">
+        <!-- Restaurant Card 5 -->
+        <div class="restaurant-card">
+            <div class="offer-badge">50% OFF</div>
+            <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Restaurant" class="restaurant-img">
+            <div class="restaurant-info">
+                <h3 class="restaurant-name">Tandoori Nights</h3>
+                <p class="restaurant-cuisine">North Indian, BBQ, Kebabs</p>
+                <div class="restaurant-details">
+                    <span class="rating">4.4 ★</span>
+                    <span class="delivery-time">40 mins</span>
+                    <span class="price">₹700 for two</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Restaurant Card 6 -->
+        <div class="restaurant-card">
+            <div class="offer-badge">60% OFF</div>
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Restaurant" class="restaurant-img">
+            <div class="restaurant-info">
+                <h3 class="restaurant-name">Pasta Paradise</h3>
+                <p class="restaurant-cuisine">Italian, Continental, Pasta</p>
+                <div class="restaurant-details">
+                    <span class="rating">4.1 ★</span>
+                    <span class="delivery-time">30 mins</span>
+                    <span class="price">₹550 for two</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Restaurant Card 7 -->
+        <div class="restaurant-card">
+            <div class="offer-badge">40% OFF</div>
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Restaurant" class="restaurant-img">
+            <div class="restaurant-info">
+                <h3 class="restaurant-name">Burger Factory</h3>
+                <p class="restaurant-cuisine">Burgers, Fast Food, American</p>
+                <div class="restaurant-details">
+                    <span class="rating">4.6 ★</span>
+                    <span class="delivery-time">25 mins</span>
+                    <span class="price">₹450 for two</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Restaurant Card 8 -->
+        <div class="restaurant-card">
+            <div class="offer-badge">30% OFF</div>
+            <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Restaurant" class="restaurant-img">
+            <div class="restaurant-info">
+                <h3 class="restaurant-name">Sweet Tooth</h3>
+                <p class="restaurant-cuisine">Desserts, Bakery, Ice Cream</p>
+                <div class="restaurant-details">
+                    <span class="rating">4.7 ★</span>
+                    <span class="delivery-time">20 mins</span>
+                    <span class="price">₹350 for two</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>FoodExpress</h3>
+                <p>Order your favorite food from the best restaurants and get it delivered to your doorstep.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Restaurants</a></li>
+                    <li><a href="#">Offers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Food Street, Mumbai</li>
+                    <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                    <li><i class="fas fa-envelope"></i> support@foodexpress.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 FoodExpress. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Simple JavaScript for interactive elements
+    document.addEventListener('DOMContentLoaded', function() {
+        // Filter buttons
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Category links
+        const categoryLinks = document.querySelectorAll('.category-list a');
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                categoryLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const headerBottom = document.querySelector('.header-bottom');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            headerBottom.style.display = headerBottom.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Adjust display on window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                headerBottom.style.display = '';
+            }
+        });
+    });
+</script>
+</body>
+</html>
