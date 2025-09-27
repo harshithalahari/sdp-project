@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { setCsrfHeader } from '../utils/csrfToken';
 
-const api = axios.create({
-  baseURL: 'http://localhost:8082',
+cgit status
+
   headers: {
     'Content-Type': 'application/json',
   },
