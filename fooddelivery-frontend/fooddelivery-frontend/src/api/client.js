@@ -1,32 +1,39 @@
 import axios from 'axios';
 import { setCsrfHeader } from '../utils/csrfToken';
 
-cgit status
-
+// Create Axios instance
+const api = axios.create({
+  baseURL: 'http://localhost:2025', // replace with your backend port
   headers: {
     'Content-Type': 'application/json',
   },
   withCredentials: false,
 });
 
+// Add CSRF header if needed
+setCsrfHeader(api);
+
 // Add token and CSRF protection to requests
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  console.log('API Request - Token from localStorage:', token);
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-    console.log('API Request - Authorization header set');
-  } else {
-    console.log('API Request - No token found');
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    console.log('API Request - Token from localStorage:', token);
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+      console.log('API Request - Authorization header set');
+    } else {
+      console.log('API Request - No token found');
+    }
+
+    console.log('API Request URL:', config.url);
+    console.log('API Request Headers:', config.headers);
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  
-  console.log('API Request URL:', config.url);
-  console.log('API Request Headers:', config.headers);
-  
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
+);
 
 // Handle response errors
 api.interceptors.response.use(
@@ -42,5 +49,3 @@ api.interceptors.response.use(
 );
 
 export default api;
-
-
